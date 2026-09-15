@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="15 秒静音视频 BGM 本地批量处理工具">
+  <title>视频配乐批量处理</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23111624'/%3E%3Cpath d='M10 20.5a3.5 3.5 0 1 0 2 3.15V11l11-2v8.5a3.5 3.5 0 1 0 2 3.15V5L10 7.7z' fill='%2359e0c2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/styles.css?v=20260915-12">
+</head>
+<body>
+  <div class="author-mark" aria-label="作者 Matthew">CREATED BY MATTHEW</div>
+  <main class="shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">VIDEO AUDIO STUDIO</p>
+        <h1>视频配乐批量处理</h1>
+      </div>
+      <div class="privacy"><span></span>素材仅在本机处理</div>
+    </header>
+
+    <section class="bgm-section" aria-labelledby="bgm-title">
+      <div class="section-head">
+        <div>
+          <span class="step">01</span>
+          <h2 id="bgm-title">音乐素材库</h2>
+        </div>
+        <p>不限数量 · 支持 MP3、M4A、WAV 和 AAC</p>
+      </div>
+      <label class="bgm-dropzone" id="bgm-dropzone" for="bgm-input"><strong>拖拽音乐到这里</strong><span>或点击选择多个 BGM</span><input id="bgm-input" type="file" accept="audio/*,.mp3,.m4a,.wav,.aac" multiple hidden></label>
+      <div class="bgm-grid" id="bgm-grid"></div>
+    </section>
+
+    <section class="workspace" aria-labelledby="video-title">
+      <div class="section-head">
+        <div>
+          <span class="step">02</span>
+          <h2 id="video-title">分配视频和音乐</h2>
+        </div>
+        <div class="header-actions">
+          <div class="view-switch" aria-label="表格视图">
+            <button class="active" id="view-input" type="button">输入队列</button>
+            <button id="view-failed" type="button">处理失败 <span id="failed-count">0</span></button>
+            <button id="view-done" type="button">处理完成 <span id="done-count">0</span></button>
+          </div>
+          <input id="video-input" type="file" accept="video/*,.mp4,.mov,.m4v" multiple hidden>
+        </div>
+      </div>
+
+      <div class="bulkbar" id="bulkbar">
+        <label class="select-all"><input id="select-all" type="checkbox">选择全部</label>
+        <div><strong id="selection-count">0</strong> / <strong id="video-count">0</strong> 条已选</div>
+        <label>应用 BGM
+          <select id="bulk-bgm"><option value="">选择 BGM</option></select>
+        </label>
+        <button class="action-button" id="apply-bgm" type="button">应用到已选</button>
+        <label>首条起点
+          <div class="time-input"><input id="bulk-start" type="number" min="0" step="0.1" value="0"><span>秒</span></div>
+        </label>
+        <label>每条递增
+          <div class="time-input"><input id="bulk-step" type="number" min="0" step="0.1" value="10"><span>秒</span></div>
+        </label>
+        <button class="action-button" id="apply-progression" type="button">设置递进起点</button>
+        <button class="action-button" id="rename-output" type="button">按顺序命名输出</button>
+        <label>音频模式<select id="audio-mode"><option value="replace">替换原音</option><option value="mix">保留并混音</option></select></label>
+        <label>原音 dB<div class="time-input"><input id="original-db" type="number" min="-60" max="12" step="1" value="-6"><span>dB</span></div></label>
+        <label>音乐 dB<div class="time-input"><input id="bgm-db" type="number" min="-60" max="12" step="1" value="-8"><span>dB</span></div></label>
+        <button class="text-button" id="apply-audio" type="button">应用音频设置</button>
+      </div>
+
+      <div class="dropzone" id="dropzone">
+        <div class="drop-icon">↑</div>
+        <strong id="drop-title">把视频上传至此</strong>
+      </div>
+
+      <div class="progress-panel hidden" id="progress-panel" aria-live="polite">
+        <div><strong id="progress-label">正在处理</strong><span id="progress-value">0 / 0</span></div>
+        <div class="progress-track"><i id="progress-bar"></i></div>
+      </div>
+
+      <div class="table-wrap hidden" id="table-wrap">
+        <table>
+          <thead><tr><th></th><th>#</th><th>视频素材</th><th>选择 BGM</th><th>音乐起点</th><th>状态</th><th>成品</th><th>操作</th></tr></thead>
+          <tbody id="video-body"></tbody>
+        </table>
+      </div>
+      <section class="batch-downloads" id="batch-downloads" aria-label="处理批次"></section>
+    </section>
+
+    <footer class="actionbar">
+      <div class="summary" id="summary">请先添加视频</div>
+      <div class="footer-actions">
+        <a class="secondary-button hidden" id="download-all" href="/api/download-all">打包下载全部</a>
+        <button class="secondary-button hidden" id="download-selected" type="button">下载已选成品</button>
+        <button class="secondary-button hidden" id="delete-selected" type="button">删除已选视频</button>
+        <button class="secondary-button hidden" id="retry-failed" type="button">仅重试失败项</button>
+        <button class="primary-button" id="start" type="button" disabled><span>开始处理</span><b>→</b></button>
+      </div>
+    </footer>
+  </main>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="/app.js?v=20260915-15"></script>
+  <script src="/extra.js?v=20260915-14"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+.idea/
+.vscode/
+
+# Local runtime state and personal media
+/.batch-session.json
+/.batch-session.tmp
+/.server-info.json
+/.server-info.tmp
+/.server.lock
+/输入缓存/*
+!/输入缓存/.gitkeep
+/处理完成/*
+!/处理完成/.gitkeep
+
+# Rebuilt locally for the current Mac architecture
+/bin/bgm_mux
