@@ -1,54 +1,191 @@
-# 视频配乐批量处理
+<div align="center">
 
-一个完全在 Mac 本地运行的批量视频配乐工具。视频和音乐不会上传到互联网，浏览器页面只连接本机服务。
+# 🎬 视频配乐批量处理
 
-## 功能
+**在 Mac 本地为大量视频快速分配、裁切并烧录 BGM**
 
-- 一次拖入多个视频和不限数量的 BGM。
-- 为单条或多条视频批量分配 BGM。
-- 按指定秒数递进设置每条视频的音乐起点。
-- 替换原音，或保留原音并分别调节原音与 BGM 音量。
-- 保持源视频分辨率、画面比例和时长，输出 MP4。
-- 失败项目单独重试，成功项目支持单独、勾选或按批次下载。
-- 拖拽调整视频顺序，并可按 `1.mp4`、`2.mp4` 的顺序命名输出。
+[![macOS](https://img.shields.io/badge/macOS-12%2B-111827?logo=apple&logoColor=white)](#系统要求)
+[![Python](https://img.shields.io/badge/Python-3.x-3776AB?logo=python&logoColor=white)](#系统要求)
+[![Local Processing](https://img.shields.io/badge/Processing-100%25_Local-14866D)](#隐私与本地数据)
+[![License](https://img.shields.io/badge/License-MIT-4169C8)](LICENSE)
 
-## 系统要求
+无需上传云端，无需安装复杂的视频编辑软件。拖入视频与音乐、完成批量设置，然后一次生成全部成品。
 
-- macOS。
-- Xcode Command Line Tools，用于编译 Swift/AVFoundation 处理引擎。
-- 系统自带的 Python 3。
+</div>
 
-如果尚未安装 Command Line Tools，可在终端执行：
+---
+
+## ✨ 功能亮点
+
+| 功能 | 说明 |
+| --- | --- |
+| 🎵 不限数量 BGM | 支持一次拖入多个 MP3、M4A、WAV 或 AAC 文件 |
+| 🎞️ 批量导入视频 | 支持 MP4、MOV、M4V，可连续拖入并显示缩略图与预览 |
+| 🎨 BGM 颜色标记 | 每首音乐使用独立颜色，快速辨认视频与音乐的对应关系 |
+| ⚡ 批量分配 | 勾选多条视频后，一次指定 BGM 和音乐起点 |
+| ⏱️ 递进起点 | 例如从 0 秒开始，每条视频自动增加 10 秒 |
+| 🔊 替换或混音 | 可覆盖原音，也可保留原音并分别调节两路音量 |
+| ↕️ 自定义顺序 | 拖拽调整视频顺序，并按 `1.mp4`、`2.mp4`……输出 |
+| ♻️ 失败重试 | 失败项目独立显示，可重新设置并再次处理 |
+| 📦 灵活下载 | 支持单条、勾选项或按处理批次下载 |
+| 🔒 本地处理 | 视频、音乐和成品始终保存在你的 Mac 上 |
+
+## 🧭 工作流程
+
+```mermaid
+flowchart LR
+    A[拖入多个 BGM] --> B[拖入视频素材]
+    B --> C[批量选择 BGM]
+    C --> D[设置起点与音量]
+    D --> E[开始处理]
+    E --> F{处理结果}
+    F -->|成功| G[单条 / 所选 / 批次下载]
+    F -->|失败| H[重新设置并重试]
+```
+
+## 🚀 快速开始
+
+### 1. 下载项目
+
+点击 GitHub 页面右上方的 **Code → Download ZIP**，解压后进入项目文件夹；也可以使用 Git：
+
+```bash
+git clone https://github.com/Myeonghan726/video-audio-batch-tool.git
+cd video-audio-batch-tool
+```
+
+### 2. 启动工具
+
+双击：
+
+```text
+启动BGM批处理工具.command
+```
+
+首次启动会根据当前 Mac 架构自动编译 AVFoundation 处理引擎，随后浏览器会自动打开本地操作页面。
+
+> [!IMPORTANT]
+> 使用期间请不要关闭启动后的终端窗口。不要直接打开 `static/index.html`，页面必须通过本地服务运行。
+
+### 3. 批量处理
+
+1. 将一首或多首音乐拖入“音乐素材库”。
+2. 将视频拖入“分配视频和音乐”区域。
+3. 勾选视频，批量应用 BGM；也可以逐条设置。
+4. 设置首条音乐起点与递增秒数，点击“设置递进起点”。
+5. 选择“替换原音”或“视频混音”，确认音量。
+6. 点击“开始处理”，通过进度条查看状态。
+7. 在“处理完成”中下载单条、所选项目或对应处理批次。
+
+## 🔊 音频设置参考
+
+| 使用场景 | 原素材音量 | BGM 音量 | 建议 |
+| --- | ---: | ---: | --- |
+| 完全替换原音 | 静音 | `0 dB` | 适合无声素材或只需要配乐的视频 |
+| 保留人声/现场声 | `-6 dB` | `-18 dB` | BGM 更自然地处于背景位置 |
+| 自定义混音 | `-60～12 dB` | `-60～12 dB` | 使用滑杆试听并按素材实际响度调整 |
+
+BGM 起点超出音乐尾部时会循环计算；音乐长度不足视频时，也会自动从头循环直至覆盖视频时长。
+
+## 🖥️ 系统要求
+
+- macOS 12 或更高版本。
+- Python 3。
+- Xcode Command Line Tools，用于编译 Swift/AVFoundation 视频处理引擎。
+
+检查 Python：
+
+```bash
+python3 --version
+```
+
+安装 Xcode Command Line Tools：
 
 ```bash
 xcode-select --install
 ```
 
-## 使用方法
+如果 macOS 首次阻止启动脚本，可在 Finder 中右键脚本，选择“打开”，然后再次确认。
 
-1. 双击 `启动BGM批处理工具.command`。
-2. 首次启动会为当前 Mac 架构自动编译本地处理引擎。
-3. 在自动打开的 `127.0.0.1` 页面拖入 BGM 和视频。
-4. 选择 BGM、起点和音频模式，然后点击“开始处理”。
-5. 在“处理完成”中下载成品，或从“处理批次”下载整批文件。
+## 📁 支持格式与输出
 
-不要直接双击 `static/index.html`，页面需要通过本机服务运行。
+| 类型 | 格式 |
+| --- | --- |
+| 视频输入 | MP4、MOV、M4V |
+| 音频输入 | MP3、M4A、WAV、AAC |
+| 视频输出 | MP4 |
 
-## 本地数据
+- 输出视频保持源素材的画面比例、分辨率和时长。
+- 视频轨道优先使用无损直通导出；无法直通时使用系统最高质量预设。
+- 所有处理均由 macOS AVFoundation 在本机完成。
 
-- 上传缓存保存在 `输入缓存/`。
-- 成品保存在 `处理完成/`。
-- 运行状态保存在 `.batch-session.json`。
+## 🗂️ 页面说明
 
-这些内容均已被 `.gitignore` 排除，不会随代码提交到 GitHub。删除页面中的素材时，对应缓存和成品也会在本机删除。
+- **输入队列**：上传、排序并设置 BGM、起点和音频参数。
+- **处理失败**：查看失败原因，将项目移回输入队列后重新设置。
+- **处理完成**：下载成品、重新处理或删除不再需要的项目。
+- **处理批次**：按每次点击“开始处理”的时间分别保存下载入口，避免不同批次混在一起。
 
-## 技术说明
+## 🔐 隐私与本地数据
 
-- 后端只使用 Python 标准库，并仅监听 `127.0.0.1`。
-- 视频与音频合成由 macOS AVFoundation 完成。
-- BGM 不足视频时长时会自动从头循环。
-- 支持 MP4、MOV、M4V 视频，以及 MP3、M4A、WAV、AAC 音频。
+本工具只监听 `127.0.0.1`，不会把素材发送到互联网。
 
-## 许可证
+| 数据 | 本地位置 |
+| --- | --- |
+| 上传缓存 | `输入缓存/` |
+| 处理成品 | `处理完成/` |
+| 会话状态 | `.batch-session.json` |
 
-[MIT](LICENSE) © 2026 Matthew
+以上运行数据均已写入 `.gitignore`，不会被提交到 GitHub。页面中删除素材时，对应的本地缓存或成品也会同步删除。
+
+## 🛠️ 常见问题
+
+<details>
+<summary><strong>页面只有文字，没有正常样式</strong></summary>
+
+请关闭该页面，双击 `启动BGM批处理工具.command` 后使用自动打开的新页面。不要直接打开 `static/index.html`。
+
+</details>
+
+<details>
+<summary><strong>显示 Failed to fetch 或一直停留在“上传中”</strong></summary>
+
+确认启动终端仍在运行，然后刷新由脚本自动打开的最新 `127.0.0.1` 页面。旧标签页使用的端口可能已经失效。
+
+</details>
+
+<details>
+<summary><strong>首次启动提示缺少开发工具</strong></summary>
+
+在终端执行 `xcode-select --install`，安装完成后重新双击启动脚本。
+
+</details>
+
+<details>
+<summary><strong>为什么不提供 Windows 版本？</strong></summary>
+
+当前处理引擎基于 macOS AVFoundation，因此暂时仅支持 Mac。
+
+</details>
+
+## 🧩 项目结构
+
+```text
+video-audio-batch-tool/
+├── native/bgm_mux.swift          # AVFoundation 视频处理引擎
+├── static/                       # 本地网页界面
+├── server.py                     # Python 本地服务与任务管理
+├── 启动BGM批处理工具.command      # 一键启动脚本
+├── 输入缓存/                     # 本地上传缓存（Git 忽略）
+└── 处理完成/                     # 本地成品目录（Git 忽略）
+```
+
+## 📄 开源许可
+
+本项目基于 [MIT License](LICENSE) 开源。你可以自由使用、修改和分发，但请保留原许可证与版权声明。
+
+<div align="center">
+
+Made with care by **Matthew**
+
+</div>
