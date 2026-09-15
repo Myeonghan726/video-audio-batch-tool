@@ -56,7 +56,19 @@ cd video-audio-batch-tool
 
 ### 2. 启动工具
 
-双击：
+> [!WARNING]
+> 从 GitHub 下载的脚本没有 Apple Developer 签名。macOS 首次打开时可能提示“Apple 无法验证是否包含恶意软件”。这是 Gatekeeper 对互联网下载脚本的常规拦截，并不代表项目文件损坏。
+
+如果弹窗只有“完成”和“移到废纸篓”，请打开终端执行：
+
+```bash
+xattr -dr com.apple.quarantine "$HOME/Downloads/video-audio-batch-tool-main"
+open "$HOME/Downloads/video-audio-batch-tool-main/启动BGM批处理工具.command"
+```
+
+如果你把项目解压到了其他位置，可先输入 `xattr -dr com.apple.quarantine `（末尾保留一个空格），再把整个项目文件夹拖进终端窗口并按回车。
+
+解除首次拦截后，直接双击以下文件即可：
 
 ```text
 启动BGM批处理工具.command
@@ -105,7 +117,7 @@ python3 --version
 xcode-select --install
 ```
 
-如果 macOS 首次阻止启动脚本，可在 Finder 中右键脚本，选择“打开”，然后再次确认。
+如果 macOS 首次阻止启动脚本，请按照上方“启动工具”中的 Gatekeeper 处理方法解除下载目录的隔离标记。
 
 ## 📁 支持格式与输出
 
@@ -139,6 +151,13 @@ xcode-select --install
 以上运行数据均已写入 `.gitignore`，不会被提交到 GitHub。页面中删除素材时，对应的本地缓存或成品也会同步删除。
 
 ## 🛠️ 常见问题
+
+<details>
+<summary><strong>提示“Apple 无法验证是否包含恶意软件”</strong></summary>
+
+这是未签名开源脚本被 macOS Gatekeeper 隔离。请使用“启动工具”章节中的 `xattr` 命令解除项目文件夹的下载隔离标记。命令只作用于你指定的项目目录。
+
+</details>
 
 <details>
 <summary><strong>页面只有文字，没有正常样式</strong></summary>
