@@ -59,14 +59,24 @@ cd video-audio-batch-tool
 > [!WARNING]
 > 从 GitHub 下载的脚本没有 Apple Developer 签名。macOS 首次打开时可能提示“Apple 无法验证是否包含恶意软件”。这是 Gatekeeper 对互联网下载脚本的常规拦截，并不代表项目文件损坏。
 
-如果弹窗只有“完成”和“移到废纸篓”，请打开终端执行：
+#### 方法 A：不用终端（最直观）
+
+1. 在警告弹窗中点击“完成”。
+2. 打开 **系统设置 → 隐私与安全性**。
+3. 向下滚动到“安全性”，点击该脚本旁边的 **仍要打开**。
+4. 再点击“打开”确认；以后就可以正常双击启动。
+
+“仍要打开”通常只在尝试启动后的一小时内显示。参见 [Apple 官方说明](https://support.apple.com/zh-cn/guide/mac-help/mh40616/mac)。
+
+#### 方法 B：复制一行命令（最快）
+
+如果项目位于默认下载目录，打开“终端”，复制下面整行、粘贴并按回车：
 
 ```bash
-xattr -dr com.apple.quarantine "$HOME/Downloads/video-audio-batch-tool-main"
-open "$HOME/Downloads/video-audio-batch-tool-main/启动BGM批处理工具.command"
+xattr -dr com.apple.quarantine "$HOME/Downloads/video-audio-batch-tool-main" && open "$HOME/Downloads/video-audio-batch-tool-main/启动BGM批处理工具.command"
 ```
 
-如果你把项目解压到了其他位置，可先输入 `xattr -dr com.apple.quarantine `（末尾保留一个空格），再把整个项目文件夹拖进终端窗口并按回车。
+这条命令只解除该项目文件夹的隔离并立即启动工具，不会关闭整台 Mac 的安全保护。如果你把项目解压到了其他位置，可先输入 `xattr -dr com.apple.quarantine `（末尾保留一个空格），再把整个项目文件夹拖进终端窗口并按回车。
 
 解除首次拦截后，直接双击以下文件即可：
 
